@@ -148,15 +148,15 @@
 
         /* ==== Cultural Hero Section ==== */
         .cultural-hero {
-            background: linear-gradient(to right, rgba(75, 0, 130, 0.7), rgba(75, 0, 130, 0.5)), 
-                        url('InShot_20250510_232241195.jpg');
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             min-height: 70vh;
             display: flex;
             align-items: center;
             position: relative;
             overflow: hidden;
+            transition: background-image 1s ease-in-out;
         }
 
         .hero-content {
@@ -549,7 +549,7 @@
     </header>
 
     <!-- Cultural Hero Section -->
-    <section class="cultural-hero">
+    <section class="cultural-hero" id="heroSection">
         <div class="hero-content">
             <div class="hero-text">
                 <h1>Preserving Tradition Through Yogasana</h1>
@@ -674,6 +674,47 @@
                 mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
             });
         });
+
+        // Image Slideshow for Hero Section
+        const heroSection = document.getElementById('heroSection');
+        const images = [
+            'img_yog1.png',
+            'img_yog2.png',
+            'img_yog3.png'
+        ];
+        
+        // Preload images
+        images.forEach(img => {
+            new Image().src = img;
+        });
+
+        let currentIndex = 0;
+        let slideshowInterval;
+        
+        function changeBackground() {
+            heroSection.style.backgroundImage = `linear-gradient(to right, rgba(75, 0, 130, 0.7), rgba(75, 0, 130, 0.5)), url('${images[currentIndex]}')`;
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+        
+        // Initialize slideshow
+        function startSlideshow() {
+            // Set initial background
+            changeBackground();
+            // Start interval
+            slideshowInterval = setInterval(changeBackground, 5000);
+        }
+        
+        // Pause on hover
+        heroSection.addEventListener('mouseenter', () => {
+            clearInterval(slideshowInterval);
+        });
+        
+        heroSection.addEventListener('mouseleave', () => {
+            slideshowInterval = setInterval(changeBackground, 5000);
+        });
+        
+        // Start the slideshow
+        startSlideshow();
     </script>
 </body>
 </html>
